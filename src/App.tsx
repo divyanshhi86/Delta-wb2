@@ -70,11 +70,46 @@ const ALL_PRODUCTS = [
   { id: 210, name: "Luxury Stationery Box", category: "Stationery Gifts", for: "Teacher", price: 3200, rating: 5.0, img: "https://picsum.photos/seed/gift-10/600/800", desc: "The ultimate collection for stationery lovers, presented in a premium box.", view: "gifts" }
 ];
 
+const BLOG_CATEGORIES = [
+  {
+    title: "Gifting Ideas",
+    blogs: [
+      { id: "gift-1", title: "Personalized Memory Boxes: A Complete Guide", date: "JANUARY 15, 2024", img: "https://picsum.photos/seed/giftblog1/600/400", content: "Memory boxes are more than just containers; they are vessels for our most cherished moments. In this guide, we explore how to select the right materials, what to include, and how to personalize each box to make it truly unique. From etched glass to hand-painted wood, the possibilities are endless." },
+      { id: "gift-2", title: "Why Custom Stationery Makes the Perfect Gift", date: "JANUARY 10, 2024", img: "https://picsum.photos/seed/giftblog2/600/400", content: "In a digital age, the tactile feel of luxury paper and the stroke of a fountain pen carry a weight that an email never can. Custom stationery allows the recipient to express their personality in every note they write. We'll delve into the world of monograms, paper weights, and ink choices." },
+      { id: "gift-3", title: "Eco-Friendly Gifts: Style with a Conscious", date: "JANUARY 22, 2024", img: "https://picsum.photos/seed/giftblog5/600/400", content: "Choosing eco-friendly gifts is a powerful way to show you care for both the recipient and the planet. From recycled paper products to bamboo-based accessories, sustainable gifting is more stylish than ever. Learn how to identify truly green products and make ethical choices that don't compromise on luxury." }
+    ]
+  },
+  {
+    title: "Gift Decoration Ideas",
+    blogs: [
+      { id: "deco-1", title: "10 Creative Ways to Wrap Your Gifts", date: "FEBRUARY 02, 2024", img: "https://picsum.photos/seed/giftblog3/600/400", content: "Presentation is half the gift! Discover how to use sustainable materials, Japanese Furoshiki techniques, and even dried botanicals to create gift wrap that's almost too beautiful to open. These 10 ideas will elevate your gifting game for any occasion." },
+      { id: "deco-2", title: "DIY Gift Tags and Decorative Ribbons", date: "FEBRUARY 14, 2024", img: "https://picsum.photos/seed/giftblog4/600/400", content: "Learn how to make your own gift tags using scraps of beautiful paper, stamps, and calligraphy. We also show you how to tie the perfect bow every time, and how to mix and match ribbon textures for a professional finish." },
+      { id: "deco-3", title: "Using Natural Elements: A Rustic Approach", date: "FEBRUARY 25, 2024", img: "https://picsum.photos/seed/giftblog6/600/400", content: "Nature provides the most beautiful decorations for free. Discover how to incorporate pinecones, sprigs of eucalyptus, and even dried orange slices into your gift presentation. This rustic aesthetic is not only visually stunning but also offers a wonderful sensory experience through natural scents." }
+    ]
+  },
+  {
+    title: "Tech and AI related",
+    blogs: [
+      { id: "tech-1", title: "What Keyboard to Pick for Gaming (Budget Friendly)", date: "MARCH 05, 2024", img: "https://picsum.photos/seed/techblog1/600/400", content: "Gaming doesn't have to break the bank. We test 5 budget-friendly mechanical keyboards that offer great performance, RGB lighting, and robust build quality. Whether you prefer linear, tactile, or clicky switches, there's a budget option for you." },
+      { id: "tech-2", title: "The Future of AI in Daily Stationery", date: "MARCH 12, 2024", img: "https://picsum.photos/seed/techblog2/600/400", content: "Can AI help you write better? We look at the emerging field of smart notebooks and AI-integrated writing tools that bridge the gap between analog thought and digital execution. Discover how your next notebook might help you organize your life." }
+    ]
+  },
+  {
+    title: "Top Brands for Earphone or Headphone",
+    blogs: [
+      { id: "audio-1", title: "Sony vs Bose: The Ultimate Headphones Battle", date: "APRIL 01, 2024", img: "https://picsum.photos/seed/audioblog1/600/400", content: "The age-old question: Sony WH-1000XM5 or Bose QuietComfort? We take a deep dive into noise cancellation, sound profiles, comfort for long listening sessions, and battery life to help you decide which one belongs on your ears." },
+      { id: "audio-2", title: "Best Budget Wired Earphones in 2024", date: "APRIL 10, 2024", img: "https://picsum.photos/seed/audioblog2/600/400", content: "Wired audio is making a comeback! For those who value latency-free sound and never want to worry about charging, we've Rounded up the best In-Ear Monitors (IEMs) and classic wired buds that deliver audiophile quality under ₹2000." },
+      { id: "audio-3", title: "Sennheiser vs Audio-Technica: The Studio Standard", date: "APRIL 20, 2024", img: "https://picsum.photos/seed/audioblog3/600/400", content: "When it comes to legendary studio sound, two names stand above the rest. We compare the Sennheiser HD 600 series with the Audio-Technica ATH-M series. Whether you're mixing tracks in a professional studio or just want the most accurate reproduction of your favorite album at home, we break down the soundstage, clarity, and build quality of these audio giants." }
+    ]
+  }
+];
+
 const PAGES = [
   { id: "home", name: "Home", desc: "Welcome to Delta Institute & Stationery Store. Explore our courses and shop.", view: "home" },
   { id: "shop", name: "Stationery Shop", desc: "Premium pens, notebooks, and art supplies for your creative journey.", view: "shop" },
   { id: "courses", name: "Professional Courses", desc: "Hands-on training in computer science, design, and more.", view: "courses" },
   { id: "services", name: "Tech Services", desc: "Expert computer repair, hardware upgrades, and software solutions.", view: "services" },
+  { id: "blogs", name: "Blogs", desc: "Insights on gifting, tech, and creative living.", view: "blogs" },
   { id: "contact", name: "Contact Us", desc: "Get in touch with our team for support or inquiries.", view: "contact" },
   { id: "printing", name: "Printing Services", desc: "High-quality A4/A3 printing, photo printing, and PAN card services.", view: "printing" },
   { id: "tech", name: "Tech Products", desc: "Premium peripherals, keyboards, mice, and audio gear.", view: "tech" },
@@ -606,6 +641,7 @@ export default function App() {
 
   const [liked, setLiked] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [selectedBlog, setSelectedBlog] = useState<any>(null);
 
   const addToCart = (product: any) => {
     setCart(prev => {
@@ -691,12 +727,14 @@ export default function App() {
           {view === "contact" && <ContactView />}
           {view === "printing" && <PrintingView />}
           {view === "tech" && <TechView onAddToCart={addToCart} likedItems={liked} onToggleLike={toggleLike} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
-          {view === "gifts" && <GiftsView onAddToCart={addToCart} likedItems={liked} onToggleLike={toggleLike} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
+          {view === "gifts" && <GiftsView setView={setView} onAddToCart={addToCart} likedItems={liked} onToggleLike={toggleLike} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
+          {view === "blogs" && <BlogView setView={setView} onBlogClick={(b: any) => { setSelectedBlog(b); setView("blog-detail"); window.scrollTo(0, 0); }} />}
+          {view === "blog-detail" && selectedBlog && <BlogDetailView blog={selectedBlog} setView={setView} onBlogClick={(b: any) => { setSelectedBlog(b); setView("blog-detail"); window.scrollTo(0, 0); }} />}
           {view === "cart" && <CartView items={cart} onRemove={removeFromCart} onUpdateQty={updateQty} setView={setView} likedItems={liked} onAddToCart={addToCart} onToggleLike={toggleLike} />}
           {view === "liked" && <LikedView items={liked} onAddToCart={addToCart} onToggleLike={toggleLike} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
           {view === "dashboard" && <DashboardView user={user} setView={setView} />}
           {view === "profile" && <ProfileView user={user} setUser={setUser} setView={setView} />}
-          {view === "coming-soon" && <ComingSoonView />}
+          {view === "coming-soon" && <ComingSoonView setView={setView} onBlogClick={(b: any) => { setSelectedBlog(b); setView("blog-detail"); window.scrollTo(0, 0); }} />}
           {view === "product-detail" && (
             <ProductDetailView 
               product={selectedProduct} 
@@ -758,7 +796,7 @@ function Sidebar({ setView, lang, setLang }: any) {
       icon: <BookOpen size={22} />,
       sub: [
         { name: "Courses", view: "courses", icon: <GraduationCap size={18} /> },
-        { name: "Blogs", view: "coming-soon", icon: <FileText size={18} /> }
+        { name: "Our Blogs", view: "blogs", icon: <FileText size={18} /> }
       ]
     },
     { name: "Coming Soon", icon: <ShoppingBag size={22} />, view: "coming-soon" },
@@ -943,6 +981,7 @@ function Header({ currentView, setView, lang, setLang, onCartClick, cartCount, l
         <nav className="hidden xl:flex items-center gap-10 font-bold text-sm uppercase tracking-widest text-slate-500 absolute left-1/2 -translate-x-1/2">
           <button onClick={() => setView("home")} className={`${currentView === "home" ? "text-slate-900 border-b-2 border-slate-900 pb-1" : "hover:text-slate-900"} transition-colors`}>Home</button>
           <button onClick={() => setView("shop")} className={`${currentView === "shop" ? "text-slate-900 border-b-2 border-slate-900 pb-1" : "hover:text-slate-900"} transition-colors`}>Shop</button>
+          <button onClick={() => setView("blogs")} className={`${currentView === "blogs" ? "text-slate-900 border-b-2 border-slate-900 pb-1" : "hover:text-slate-900"} transition-colors`}>Blogs</button>
           <button onClick={() => setView("courses")} className={`${currentView === "courses" ? "text-slate-900 border-b-2 border-slate-900 pb-1" : "hover:text-slate-900"} transition-colors`}>Courses</button>
           <button onClick={() => setView("services")} className={`${currentView === "services" ? "text-slate-900 border-b-2 border-slate-900 pb-1" : "hover:text-slate-900"} transition-colors`}>Services</button>
           <button onClick={() => setView("contact")} className={`${currentView === "contact" ? "text-slate-900 border-b-2 border-slate-900 pb-1" : "hover:text-slate-900"} transition-colors`}>Contact</button>
@@ -2365,7 +2404,7 @@ function TechView({ onAddToCart, likedItems, onToggleLike, onProductClick }: any
   );
 }
 
-function GiftsView({ onAddToCart, likedItems, onToggleLike, onProductClick }: any) {
+function GiftsView({ setView, onAddToCart, likedItems, onToggleLike, onProductClick }: any) {
   const [selectedGift, setSelectedGift] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -2553,7 +2592,12 @@ function GiftsView({ onAddToCart, likedItems, onToggleLike, onProductClick }: an
                 <div className="relative z-10 space-y-4">
                   <h4 className="text-2xl font-serif italic leading-tight">Make it truly <span className="text-delta-primary">yours.</span></h4>
                   <p className="text-xs text-white/50 leading-relaxed font-medium">Every gift can be personalized with custom messages, wrapping, and boxing.</p>
-                  <button className="w-full py-4 bg-delta-primary text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-delta-primary/20">Learn More</button>
+                  <button 
+                    onClick={() => setView("coming-soon")}
+                    className="w-full py-4 bg-delta-primary text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-delta-primary/20"
+                  >
+                    See Blogs
+                  </button>
                 </div>
                 <Sparkles className="absolute -right-10 -bottom-10 text-white/5 rotate-12 group-hover:scale-110 transition-transform duration-700" size={120} />
               </div>
@@ -3334,81 +3378,307 @@ function GiftCustomizationModal({ product, onClose, onAddToCart }: any) {
   );
 }
 
-function ComingSoonView() {
-  const blogs = [
-    {
-      title: "Viverra Tellus Habitasse Platea Dictumst Vestibulum",
-      date: "DECEMBER 21, 2023",
-      img: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2001&auto=format&fit=crop"
-    },
-    {
-      title: "Rutrum Quisque Non Tellus Orciac Auctor Pellentesque",
-      date: "DECEMBER 21, 2023",
-      img: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=2070&auto=format&fit=crop"
-    },
-    {
-      title: "Pellentesque Massa Placerat Duis Ultricies Lacus",
-      date: "DECEMBER 21, 2023",
-      img: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop"
-    },
-    {
-      title: "Lorem Ipsum Dolor Sitamet Consectetur Adipiscing",
-      date: "DECEMBER 21, 2023",
-      img: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop"
-    }
-  ];
+function ComingSoonView({ setView, onBlogClick }: any) {
+  const allBlogs = BLOG_CATEGORIES.flatMap(c => c.blogs);
+  const popularPosts = allBlogs.slice(0, 4);
+  const giftPicks = ALL_PRODUCTS.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-slate-50/50 py-16 px-4 md:px-12">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div className="lg:col-span-8 flex flex-col justify-start pt-4">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white border border-black/5 rounded-[2rem] p-8 shadow-lg shadow-black/5 flex flex-col items-center text-center space-y-6 relative overflow-hidden group max-w-[283px]"
-          >
-            <div className="absolute top-0 right-0 w-24 h-24 bg-slate-50 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700" />
-            <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 relative z-10">
-              <Briefcase size={32} />
-            </div>
-            <div className="space-y-3 relative z-10">
-              <h2 className="text-xl font-black text-slate-900 tracking-tight leading-tight uppercase">Job <br /> Application</h2>
-              <div className="inline-block px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-[9px] font-black uppercase tracking-widest">Soon</div>
-              <p className="text-slate-500 text-[11px] font-bold leading-relaxed">Stay tuned for exciting opportunities in retail, education, and tech services.</p>
-            </div>
-            <button className="relative z-10 w-full py-3 bg-slate-900 text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-delta-primary transition-all duration-300">Apply</button>
-          </motion.div>
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
+        {/* Main Content */}
+        <div className="flex-1 space-y-24">
+          <div className="space-y-4">
+            <h1 className="text-5xl font-black text-slate-900 tracking-tighter">Coming Soon</h1>
+            <p className="text-slate-500 font-medium">Exciting updates and opportunities on the horizon.</p>
+          </div>
+
+          {/* Coming Soon Cards Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center md:justify-items-start">
+            {/* Job Application Card */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white border border-black/5 rounded-[2rem] p-8 shadow-lg shadow-black/5 flex flex-col items-center text-center space-y-6 relative overflow-hidden group w-full max-w-[320px]"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-slate-50 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700" />
+              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 relative z-10">
+                <Briefcase size={32} />
+              </div>
+              <div className="space-y-3 relative z-10">
+                <h2 className="text-xl font-black text-slate-900 tracking-tight leading-tight uppercase">Job <br /> Application</h2>
+                <div className="inline-block px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-[9px] font-black uppercase tracking-widest">Coming Soon</div>
+                <p className="text-slate-500 text-[11px] font-bold leading-relaxed">Stay tuned for exciting opportunities in retail, education, and tech services.</p>
+              </div>
+              <button className="relative z-10 w-full py-3 bg-slate-900 text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-delta-primary transition-all duration-300">Apply</button>
+            </motion.div>
+
+            {/* New Course Card */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white border border-black/5 rounded-[2rem] p-8 shadow-lg shadow-black/5 flex flex-col items-center text-center space-y-6 relative overflow-hidden group w-full max-w-[320px]"
+            >
+              <div className="absolute top-0 right-0 w-24 h-24 bg-slate-50 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700" />
+              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 relative z-10">
+                <GraduationCap size={32} />
+              </div>
+              <div className="space-y-3 relative z-10">
+                <h2 className="text-xl font-black text-slate-900 tracking-tight leading-tight uppercase">New <br /> Course</h2>
+                <div className="inline-block px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-[9px] font-black uppercase tracking-widest">Coming Soon</div>
+                <p className="text-slate-500 text-[11px] font-bold leading-relaxed">Advanced certifications and hands-on workshops launching very soon.</p>
+              </div>
+              <button className="relative z-10 w-full py-3 bg-slate-900 text-white rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-delta-primary transition-all duration-300">Get Notified</button>
+            </motion.div>
+          </div>
         </div>
 
-        <div className="lg:col-span-4">
-          <div className="space-y-8">
-            <h3 className="text-2xl font-black text-slate-900 tracking-tight">Blogs</h3>
-            <div className="space-y-8">
-              {blogs.map((blog, idx) => (
-                <motion.div 
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="flex flex-col gap-4 group cursor-pointer"
-                >
-                  <div className="w-full aspect-video rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 shadow-sm">
-                    <img src={blog.img} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
-                  </div>
-                  <div className="space-y-2">
-                    <h4 className="text-lg font-bold text-slate-900 group-hover:text-delta-primary transition-colors leading-tight">{blog.title}</h4>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{blog.date}</p>
-                  </div>
-                </motion.div>
-              ))}
+        {/* Sidebar */}
+        <BlogSidebar 
+          setView={setView} 
+          popularPosts={popularPosts} 
+          giftPicks={giftPicks} 
+          onBlogClick={onBlogClick} 
+          showGifts={false}
+        />
+      </div>
+    </div>
+  );
+}
+
+function BlogSidebar({ setView, popularPosts, giftPicks, onBlogClick, showPopular = true, showGifts = true }: any) {
+  return (
+    <aside className="w-full lg:w-80 space-y-16">
+      {/* Popular Posts */}
+      {showPopular && (
+        <div className="space-y-8">
+          <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-900 flex items-center gap-3">
+            <div className="w-6 h-px bg-delta-primary" /> Popular Posts
+          </h3>
+          <div className="space-y-6">
+            {popularPosts.map((post: any) => (
+              <div 
+                key={post.id} 
+                onClick={() => onBlogClick(post)}
+                className="group cursor-pointer flex gap-4 items-center"
+              >
+                <div className="w-20 h-20 bg-white rounded-2xl overflow-hidden border border-black/5 flex-shrink-0">
+                  <img src={post.img} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-xs font-bold text-slate-900 line-clamp-2 group-hover:text-delta-primary transition-colors">{post.title}</h4>
+                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{post.date}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Top Gift Picks */}
+      {showGifts && (
+        <div className="space-y-8">
+          <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-900 flex items-center gap-3">
+            <div className="w-6 h-px bg-delta-primary" /> Top Gift Picks
+          </h3>
+          <div className="space-y-6">
+            {giftPicks.map((gift: any) => (
+              <div 
+                key={gift.id} 
+                onClick={() => setView("shop")}
+                className="group cursor-pointer flex gap-4 items-center"
+              >
+                <div className="w-20 h-20 bg-white rounded-2xl overflow-hidden border border-black/5 flex-shrink-0">
+                  <img src={gift.img} alt={gift.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-xs font-bold text-slate-900 group-hover:text-delta-primary transition-colors">{gift.name}</h4>
+                  <p className="text-[10px] font-black text-delta-primary uppercase tracking-widest">₹{gift.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Newsletter */}
+      <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white space-y-6">
+        <div className="space-y-2">
+          <h4 className="text-xl font-bold tracking-tight">Stay Updated</h4>
+          <p className="text-xs text-white/50 leading-relaxed">Subscribe to our newsletter for the latest stories and gift ideas.</p>
+        </div>
+        <div className="space-y-3">
+          <input type="email" placeholder="Email Address" className="w-full bg-white/10 border border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-2 focus:ring-delta-primary outline-none transition-all" />
+          <button className="w-full py-3 bg-delta-primary text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all">Subscribe</button>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function BlogView({ setView, onBlogClick }: any) {
+  const allBlogs = BLOG_CATEGORIES.flatMap(c => c.blogs);
+  const popularPosts = allBlogs.slice(0, 4);
+  const giftPicks = ALL_PRODUCTS.filter(p => p.view === "gifts").slice(0, 4);
+
+  return (
+    <div className="min-h-screen bg-slate-50/50 py-16 px-4 md:px-12">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16">
+        {/* Main Content */}
+        <div className="flex-1 space-y-16">
+          <div className="space-y-4">
+            <h1 className="text-5xl font-black text-slate-900 tracking-tighter">Delta Blog</h1>
+            <p className="text-slate-500 font-medium">Stories, guides, and insights from our team.</p>
+          </div>
+
+          <div className="space-y-20">
+            {BLOG_CATEGORIES.map((category, catIdx) => (
+              <div key={catIdx} className="space-y-10">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-px bg-delta-primary" />
+                  <h2 className="text-xl font-black text-slate-900 uppercase tracking-widest">{category.title}</h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                  {category.blogs.map((blog, idx) => (
+                    <motion.div 
+                      key={blog.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 }}
+                      onClick={() => onBlogClick(blog)}
+                      className="group cursor-pointer space-y-4"
+                    >
+                      <div className="aspect-[16/10] bg-white rounded-[2rem] overflow-hidden border border-black/5 shadow-sm relative">
+                        <img 
+                          src={blog.img} 
+                          alt={blog.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{blog.date}</p>
+                        <h3 className="text-lg font-bold text-slate-900 group-hover:text-delta-primary transition-colors leading-snug line-clamp-2">{blog.title}</h3>
+                        <button className="text-[10px] font-black text-delta-primary uppercase tracking-[0.2em] hover:underline pt-2">Read Article</button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <BlogSidebar 
+          setView={setView} 
+          popularPosts={popularPosts} 
+          giftPicks={giftPicks} 
+          onBlogClick={onBlogClick} 
+          showGifts={false}
+        />
+      </div>
+    </div>
+  );
+}
+
+function BlogDetailView({ blog, setView, onBlogClick }: any) {
+  const allBlogs = BLOG_CATEGORIES.flatMap(c => c.blogs);
+  const popularPosts = allBlogs.slice(0, 4);
+  const giftPicks = ALL_PRODUCTS.filter(p => p.view === "gifts").slice(0, 4);
+  const relatedBlogs = allBlogs.filter(b => b.id !== blog.id).slice(0, 2);
+
+  return (
+    <div className="min-h-screen bg-slate-50/30">
+      {/* Blog Hero */}
+      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img src={blog.img} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+        </div>
+        <div className="relative z-10 text-center space-y-6 px-4 max-w-4xl mx-auto text-white">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/60">{blog.date}</p>
+            <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">{blog.title}</h1>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Main Container */}
+      <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 flex flex-col lg:flex-row gap-16">
+        {/* Content Section */}
+        <div className="flex-1 min-w-0">
+          <button 
+            onClick={() => setView("blogs")}
+            className="mb-12 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-delta-primary transition-colors group"
+          >
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to Blogs
+          </button>
+
+          <article className="prose prose-slate prose-xl max-w-none bg-white p-8 md:p-12 rounded-[3rem] border border-black/5 shadow-sm">
+            <p className="text-xl text-slate-600 leading-relaxed font-medium mb-12 border-l-4 border-delta-primary pl-8 py-2">
+              {blog.content}
+            </p>
+            <div className="space-y-8 text-slate-700 leading-relaxed font-medium">
+              <p>
+                In today's fast-paced world, finding moments of genuine connection and creative expression is more important than ever. Whether you're carefully selecting a gift that reflects a deep personal bond, or setting up a workspace that inspires your best ideas, the details always matter.
+              </p>
+              <p>
+                At Delta, we believe that quality and thoughtfulness go hand-in-hand. Our curated selection of products and services is designed to help you live a better, more creative life. From the perfect gaming keyboard to a personalized gift box, we're here to support your journey.
+              </p>
             </div>
-            <div className="pt-8 border-t border-slate-100">
-              <button className="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] hover:text-delta-primary transition-colors flex items-center gap-2 group">
-                View All Posts <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
-              </button>
+
+            {/* Share Section */}
+            <div className="mt-20 py-12 border-y border-black/5 flex flex-wrap items-center justify-between gap-8">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-400">
+                  <User size={24} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Written by</p>
+                  <p className="text-sm font-bold text-slate-900">Delta Editorial Team</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                {[Facebook, Twitter, Instagram].map((Icon, i) => (
+                  <button key={i} className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
+                    <Icon size={18} />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </article>
+
+          {/* Related Posts */}
+          <div className="mt-20 space-y-10">
+            <h3 className="text-2xl font-black text-slate-900 tracking-tight">More Stories</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              {relatedBlogs.map((rb: any) => (
+                <div 
+                  key={rb.id} 
+                  onClick={() => onBlogClick(rb)}
+                  className="group cursor-pointer space-y-4"
+                >
+                  <div className="aspect-video rounded-[2rem] overflow-hidden border border-black/5 bg-white">
+                    <img src={rb.img} alt={rb.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  </div>
+                  <h4 className="text-lg font-bold text-slate-900 group-hover:text-delta-primary transition-colors line-clamp-2">{rb.title}</h4>
+                </div>
+              ))}
             </div>
           </div>
         </div>
+
+        {/* Sidebar */}
+        <BlogSidebar 
+          setView={setView} 
+          popularPosts={popularPosts} 
+          giftPicks={giftPicks} 
+          onBlogClick={onBlogClick} 
+        />
       </div>
     </div>
   );
@@ -3422,6 +3692,7 @@ function MobileMenu({ isOpen, onClose, setView, lang, setLang }: any) {
     { id: "services", label: "Services", icon: <Settings size={20} /> },
     { id: "printing", label: "Printing", icon: <Printer size={20} /> },
     { id: "tech", label: "Tech", icon: <Keyboard size={20} /> },
+    { id: "blogs", label: "Blogs", icon: <FileText size={20} /> },
     { id: "gifts", label: "Gifts", icon: <Gift size={20} /> },
     { id: "contact", label: "Contact", icon: <Mail size={20} /> }
   ];
