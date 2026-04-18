@@ -720,7 +720,7 @@ export default function App() {
         />
 
         <main className="pt-16">
-          {view === "home" && <HomeView setView={setView} onAddToCart={addToCart} isCategoriesOpen={isCategoriesOpen} setIsCategoriesOpen={setIsCategoriesOpen} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
+          {view === "home" && <HomeView setView={setView} onAddToCart={addToCart} likedItems={liked} onToggleLike={toggleLike} isCategoriesOpen={isCategoriesOpen} setIsCategoriesOpen={setIsCategoriesOpen} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
           {view === "shop" && <ShopView onAddToCart={addToCart} likedItems={liked} onToggleLike={toggleLike} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
           {view === "courses" && <CoursesView />}
           {view === "services" && <ServicesView setView={setView} />}
@@ -1121,7 +1121,7 @@ function Header({ currentView, setView, lang, setLang, onCartClick, cartCount, l
   );
 }
 
-function HomeView({ setView, onAddToCart, isCategoriesOpen, setIsCategoriesOpen, onProductClick }: any) {
+function HomeView({ setView, onAddToCart, likedItems, onToggleLike, isCategoriesOpen, setIsCategoriesOpen, onProductClick }: any) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
     {
@@ -1303,39 +1303,53 @@ function HomeView({ setView, onAddToCart, isCategoriesOpen, setIsCategoriesOpen,
             VIEW ALL <ChevronRight size={14} />
           </button>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-10">
           {[
-            { id: 1, name: "Professional Signature Pen", category: "Pens", price: 499, rating: 4.9, img: "https://picsum.photos/seed/delta-pen-1/400/400", brand: "Parker" },
-            { id: 2, name: "Premium Leather Journal", category: "Notebooks", price: 899, rating: 4.8, img: "https://picsum.photos/seed/delta-journal-1/400/400", brand: "Moleskine" },
-            { id: 3, name: "Wireless Tech Mouse", category: "Tech", price: 1299, rating: 4.7, img: "https://picsum.photos/seed/delta-mouse-1/400/400", brand: "Logitech" },
-            { id: 4, name: "Artistic Desk Lamp", category: "Decor", price: 2499, rating: 4.9, img: "https://picsum.photos/seed/delta-lamp-1/400/400", brand: "Other" },
+            { id: 1, name: "Premium Fountain Pen", category: "Pens", brand: "Parker", price: 1299, originalPrice: 2599, discount: "50% off", rating: 4.9, img: "https://picsum.photos/seed/delta-pen-1/400/400", bestseller: true, inStock: true },
+            { id: 2, name: "Leather Bound Journal", category: "Notebooks", brand: "Moleskine", price: 850, originalPrice: 1060, discount: "20% off", rating: 4.8, img: "https://picsum.photos/seed/delta-journal-1/400/400", bestseller: true, inStock: true },
+            { id: 11, name: "Executive Desk Organizer", category: "Desk Accessories", brand: "Other", price: 1800, originalPrice: 3600, discount: "50% off", rating: 4.9, img: "https://picsum.photos/seed/delta-organizer-1/400/400", bestseller: true, inStock: true },
+            { id: 17, name: "Premium Calligraphy Set", category: "Stationery Sets", brand: "Other", price: 3200, originalPrice: 4000, discount: "20% off", rating: 4.9, img: "https://picsum.photos/seed/delta-calli-1/400/400", bestseller: true, inStock: true },
+            { id: 5, name: "Mechanical Pencil Set", category: "Pens", brand: "Staedtler", price: 450, originalPrice: 900, discount: "50% off", rating: 5, img: "https://picsum.photos/seed/delta-pencil-1/400/400", bestseller: true, inStock: true },
           ].map((product) => (
-            <div key={product.id} className="bg-white rounded-[2.5rem] border border-black/5 shadow-sm overflow-hidden group hover-lift p-4 cursor-pointer" onClick={() => onProductClick(product)}>
-              <div className="aspect-square bg-slate-50 rounded-[2rem] mb-6 overflow-hidden relative">
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                  <Star size={10} className="text-yellow-400 fill-yellow-400" />
-                  <span className="text-[10px] font-black">{product.rating}</span>
+            <motion.div layout key={product.id} onClick={() => onProductClick(product)} className="group cursor-pointer">
+              <div className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-slate-50 mb-4 shadow-sm">
+                <img src={product.img} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1 bg-delta-primary text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">{product.discount}</span>
                 </div>
-                <button className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors shadow-sm">
-                  <Heart size={14} />
-                </button>
-                <div className="w-full h-full flex items-center justify-center text-slate-200">
-                  <Package size={48} />
-                </div>
-              </div>
-              <div className="space-y-2 px-2">
-                <h3 className="font-bold text-sm text-slate-900 group-hover:text-delta-primary transition-colors truncate">{product.name}</h3>
-                <p className="text-lg font-black text-slate-900">₹{product.price.toLocaleString()}</p>
-                <div className="pt-2">
+                <div className="absolute top-4 right-4 flex flex-col gap-2 translate-x-12 group-hover:translate-x-0 transition-transform duration-300">
+                  <button onClick={(e) => { e.stopPropagation(); onToggleLike(product); }} className={`w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-xl transition-colors ${likedItems.find((w: any) => w.id === product.id) ? 'text-red-500' : 'text-slate-400 hover:text-red-500'}`}>
+                    <Heart size={18} fill={likedItems.find((w: any) => w.id === product.id) ? 'currentColor' : 'none'} />
+                  </button>
                   <button 
-                    onClick={() => onAddToCart(product)}
-                    className="w-full py-2 bg-slate-50 text-slate-400 text-[8px] font-black uppercase tracking-widest rounded-full hover:bg-slate-900 hover:text-white transition-all shadow-sm"
+                    onClick={(e) => { e.stopPropagation(); onProductClick(product); }}
+                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-400 hover:text-slate-900 shadow-xl transition-colors"
                   >
-                    + Add to Cart
+                    <Search size={18} />
                   </button>
                 </div>
               </div>
-            </div>
+              <div className="space-y-2 px-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">{product.category}</span>
+                  <div className="flex items-center gap-1 text-yellow-400">
+                    <Star size={12} fill="currentColor" />
+                    <span className="text-xs font-black text-slate-900">{product.rating}</span>
+                  </div>
+                </div>
+                <h3 className="font-bold text-slate-900 group-hover:text-delta-primary transition-colors line-clamp-1">{product.name}</h3>
+                <div className="flex items-center gap-3">
+                  <span className="text-lg font-black text-slate-900">₹{product.price.toLocaleString()}</span>
+                  <span className="text-sm text-slate-400 line-through font-bold">₹{product.originalPrice.toLocaleString()}</span>
+                </div>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); onAddToCart(product); }}
+                  className="w-full mt-4 py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-delta-primary transition-all opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 shadow-xl shadow-slate-900/10"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -1440,7 +1454,10 @@ function HomeView({ setView, onAddToCart, isCategoriesOpen, setIsCategoriesOpen,
             </div>
           </div>
 
-          <div className="bg-black rounded-[2.5rem] p-10 flex items-center gap-8 text-white relative overflow-hidden group cursor-pointer">
+          <div 
+            onClick={() => setView("coming-soon")} 
+            className="bg-black rounded-[2.5rem] p-10 flex items-center gap-8 text-white relative overflow-hidden group cursor-pointer"
+          >
             <div className="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center flex-shrink-0 relative z-10">
               <ShoppingBag size={40} />
             </div>
@@ -1450,6 +1467,9 @@ function HomeView({ setView, onAddToCart, isCategoriesOpen, setIsCategoriesOpen,
               <p className="text-xs text-white/50 font-medium leading-relaxed max-w-[280px]">The Delta Limited Edition collection. Exclusive workspace tools designed for peak efficiency.</p>
             </div>
             <ShoppingBag size={180} className="absolute -right-12 -bottom-12 text-white/5 rotate-12 group-hover:scale-110 transition-transform duration-700" />
+            <div className="absolute top-8 right-8 text-white/20 group-hover:text-delta-primary transition-colors">
+              <ArrowRight size={24} />
+            </div>
           </div>
         </div>
       </section>
