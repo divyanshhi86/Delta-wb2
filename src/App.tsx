@@ -5,7 +5,7 @@ import {
   ChevronRight, ChevronUp, Clock, Copy, Cpu, CreditCard, Facebook, FilePen, 
   FileText, Gift, GraduationCap, Headphones, Heart, Home, Image as ImageIcon, 
   Instagram, Keyboard, LayoutGrid, Mail, MapPin, Megaphone, Menu, Filter,
-  MessageCircle, Minus, Monitor, Mouse, Package, Pen, PenTool, 
+  MessageCircle, Minus, Monitor, Mouse, Package, Pen, PenTool, List,
   Pencil, Play, Plus, Printer, Search, Settings, Shield, 
   ShoppingBag, ShoppingCart, Smartphone, Sparkles, Square, Star, 
   ThumbsUp, Trash2, Twitter, Upload, User, X, Youtube,
@@ -723,7 +723,7 @@ export default function App() {
           {view === "home" && <HomeView setView={setView} onAddToCart={addToCart} isCategoriesOpen={isCategoriesOpen} setIsCategoriesOpen={setIsCategoriesOpen} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
           {view === "shop" && <ShopView onAddToCart={addToCart} likedItems={liked} onToggleLike={toggleLike} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
           {view === "courses" && <CoursesView />}
-          {view === "services" && <ServicesView />}
+          {view === "services" && <ServicesView setView={setView} />}
           {view === "contact" && <ContactView />}
           {view === "printing" && <PrintingView />}
           {view === "tech" && <TechView onAddToCart={addToCart} likedItems={liked} onToggleLike={toggleLike} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
@@ -783,7 +783,7 @@ function Sidebar({ setView, lang, setLang }: any) {
   const categories = [
     { 
       name: "All Products", 
-      icon: <ShoppingBag size={22} />,
+      icon: <List size={22} />,
       sub: [
         { name: "Stationery", view: "shop", icon: <Pencil size={18} /> },
         { name: "Printing", view: "printing", icon: <Printer size={18} /> },
@@ -1951,37 +1951,74 @@ function CoursesView() {
   );
 }
 
-function ServicesView() {
+function ServicesView({ setView }: { setView: (v: string) => void }) {
   const services = [
     { title: "Bulk Printing & Photocopy", desc: "High-speed laser printing and high-quality color photocopying for all your academic and business needs.", icon: <Printer /> },
     { title: "Tech Support & Repair", desc: "Expert computer repair, software installation, and hardware upgrades by certified technicians.", icon: <Settings /> },
     { title: "Gift Customization", desc: "Personalized gifts, mug printing, and custom stationery for special occasions and corporate branding.", icon: <Gift /> }
   ];
 
+  const coreServices = [
+    { icon: <Copy size={24} />, title: "PHOTOCOPY", desc: "B&W and Color duplication", view: "printing" },
+    { icon: <Printer size={24} />, title: "PRINTING", desc: "High-speed industrial quality", view: "printing" },
+    { icon: <FilePen size={24} />, title: "FORM FILLING", desc: "Assisted government portals", view: "services" },
+    { icon: <Monitor size={24} />, title: "COMPUTER SERVICES", desc: "Software & hardware repair", view: "services" },
+    { icon: <Pen size={24} />, title: "STATIONERY", desc: "Premium office supplies", view: "shop" },
+    { icon: <Gift size={24} />, title: "GIFTS", desc: "Custom corporate branding", view: "shop" }
+  ];
+
   return (
-    <div className="bg-slate-50 min-h-screen">
-      <section className="bg-slate-900 py-16 px-4 md:px-8 text-center text-white relative overflow-hidden">
+    <div className="bg-slate-50 min-h-screen pb-24">
+      <section className="bg-slate-900 py-20 px-4 md:px-8 text-center text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
         </div>
-        <div className="relative z-10 space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold font-serif italic">Our Services</h1>
-          <p className="text-slate-400 max-w-xl mx-auto">From high-quality printing to expert tech support, we've got you covered.</p>
+        <div className="relative z-10 space-y-6">
+          <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tighter uppercase">Our Services</h1>
+          <p className="text-slate-400 max-w-xl mx-auto text-lg">From high-quality printing to expert tech support, we've got you covered with premium solutions.</p>
         </div>
       </section>
-      <section className="max-w-7xl mx-auto py-20 px-4 md:px-8 space-y-24">
+
+      <section className="max-w-7xl mx-auto py-16 px-4 md:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          {coreServices.map((item, idx) => (
+            <div 
+              key={idx} 
+              onClick={() => setView(item.view)} 
+              className="bg-white p-8 rounded-3xl border border-black/5 shadow-sm space-y-6 group cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col items-center text-center"
+            >
+              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-900 group-hover:bg-delta-primary group-hover:text-white transition-all">
+                {item.icon}
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-900">{item.title}</h3>
+                <p className="text-[11px] text-slate-400 font-bold leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="w-full h-px bg-black/[0.03]" />
+
+      <section className="max-w-7xl mx-auto py-24 px-4 md:px-8 space-y-32">
         {services.map((s, i) => (
-          <div key={i} className={`flex flex-col md:flex-row items-center gap-12 ${i % 2 === 1 ? "md:flex-row-reverse" : ""}`}>
-            <div className="flex-1 space-y-6">
-              <div className="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center shadow-xl shadow-slate-900/20">
+          <div key={i} className={`flex flex-col md:flex-row items-center gap-16 ${i % 2 === 1 ? "md:flex-row-reverse" : ""}`}>
+            <div className="flex-1 space-y-8">
+              <div className="w-16 h-16 bg-slate-50 text-slate-900 border border-black/5 rounded-2xl flex items-center justify-center shadow-sm">
                 {React.cloneElement(s.icon as React.ReactElement, { size: 32 })}
               </div>
-              <h2 className="text-4xl font-bold text-slate-900 tracking-tighter uppercase">{s.title}</h2>
-              <p className="text-slate-500 text-lg leading-relaxed">{s.desc}</p>
-              <button className="px-10 py-4 bg-slate-900 text-white font-black rounded-full hover:bg-delta-primary transition-all uppercase tracking-widest text-[10px]">Inquire Now</button>
+              <div className="space-y-4">
+                <h2 className="text-5xl font-bold text-slate-900 tracking-tighter uppercase leading-none">{s.title}</h2>
+                <p className="text-slate-500 text-xl leading-relaxed font-medium">{s.desc}</p>
+              </div>
+              <button className="px-10 py-5 bg-slate-900 text-white font-black rounded-full hover:bg-delta-primary transition-all uppercase tracking-widest text-[11px] shadow-lg shadow-slate-900/20">
+                Inquire Now
+              </button>
             </div>
-            <div className="flex-1 w-full aspect-video bg-white rounded-[2.5rem] overflow-hidden border border-black/5 flex items-center justify-center group">
-              <Package size={64} className="text-slate-200 group-hover:scale-110 transition-transform duration-500" />
+            <div className="flex-1 w-full aspect-square md:aspect-video bg-white rounded-[3rem] overflow-hidden border border-black/5 flex items-center justify-center group relative shadow-2xl shadow-black/5">
+              <div className="absolute inset-0 bg-slate-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <Package size={80} className="text-slate-100 relative z-10 group-hover:scale-110 group-hover:text-delta-primary/20 transition-all duration-700" />
             </div>
           </div>
         ))}
@@ -2050,15 +2087,6 @@ function ContactView() {
                 <p className="text-sm font-bold text-slate-900">+91 98765 43210</p>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Direct Support Line</p>
               </div>
-            </div>
-
-            <div className="bg-white p-8 rounded-[2.5rem] border border-black/5 shadow-sm hover:shadow-xl transition-all group">
-              <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-900 group-hover:bg-slate-900 group-hover:text-white transition-all mb-6">
-                <Smartphone size={24} />
-              </div>
-              <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Call Us</h3>
-              <p className="text-lg font-bold text-slate-900 leading-tight mb-1">+91 98765 43210</p>
-              <p className="text-xs font-bold text-slate-400">+91 07759 123456</p>
             </div>
           </div>
 
@@ -3687,7 +3715,7 @@ function BlogDetailView({ blog, setView, onBlogClick }: any) {
 function MobileMenu({ isOpen, onClose, setView, lang, setLang }: any) {
   const menuItems = [
     { id: "home", label: "Home", icon: <Home size={20} /> },
-    { id: "shop", label: "Shop", icon: <ShoppingBag size={20} /> },
+    { id: "shop", label: "Shop", icon: <List size={20} /> },
     { id: "courses", label: "Courses", icon: <BookOpen size={20} /> },
     { id: "services", label: "Services", icon: <Settings size={20} /> },
     { id: "printing", label: "Printing", icon: <Printer size={20} /> },
