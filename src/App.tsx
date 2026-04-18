@@ -1952,14 +1952,60 @@ function CoursesView() {
   ];
 
   return (
-    <div className="bg-slate-50 min-h-screen">
-      <section className="bg-slate-900 py-12 px-4 md:px-8 text-center text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
-        </div>
-        <div className="relative z-10 space-y-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tighter uppercase">Professional Courses</h1>
-          <p className="text-slate-400 max-w-lg mx-auto text-sm md:text-base">Elevate your skills with our industry-leading certification programs and hands-on training.</p>
+    <div className="bg-slate-50 min-h-screen pb-24">
+      {/* Redesigned Banner - Based on Reference */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 pt-8">
+        <div className="relative bg-gradient-to-br from-indigo-600 to-blue-500 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-indigo-200">
+          {/* Decorative background elements */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-400/20 rounded-full blur-[100px] translate-x-1/4 translate-y-1/4" />
+          
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between px-10 py-10 md:py-12 gap-10">
+            {/* Left Content */}
+            <div className="flex-1 space-y-6 text-center md:text-left">
+              <div className="space-y-2">
+                <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase leading-tight">
+                  Welcome to <br className="hidden md:block" />
+                  <span className="text-blue-100">Delta Academy</span>
+                </h1>
+                <p className="text-indigo-100 text-sm md:text-base font-medium max-w-md">
+                  You are viewing 10+ professional certification courses. Start your learning journey today!
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                <button className="px-8 py-3 bg-white text-indigo-600 font-black rounded-xl hover:bg-indigo-50 transition-all uppercase tracking-widest text-[10px] shadow-xl">
+                  Explore Courses
+                </button>
+                <div className="flex -space-x-3">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-indigo-600 bg-slate-100 overflow-hidden">
+                      <img src={`https://i.pravatar.cc/100?u=${i}`} alt="User" referrerPolicy="no-referrer" className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                  <div className="w-8 h-8 rounded-full border-2 border-indigo-600 bg-indigo-500 flex items-center justify-center text-[8px] font-bold text-white uppercase">
+                    +2k
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Illustration Placeholder */}
+            <div className="hidden md:flex flex-1 justify-end relative">
+              <div className="relative w-64 h-64 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
+                <div className="absolute inset-0 animate-spin-slow opacity-20">
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rounded-full" />
+                </div>
+                <GraduationCap size={120} className="text-white relative z-20 drop-shadow-2xl" />
+                {/* Floating tags to mimic candidates in reference */}
+                <div className="absolute -top-4 -left-4 bg-white p-3 rounded-2xl shadow-xl border border-black/5 rotate-[-6deg] animate-bounce">
+                  <Cpu size={24} className="text-indigo-600" />
+                </div>
+                <div className="absolute -bottom-4 right-0 bg-white p-3 rounded-2xl shadow-xl border border-black/5 rotate-[6deg] scale-110">
+                  <PenTool size={24} className="text-blue-500" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
