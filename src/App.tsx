@@ -2700,14 +2700,14 @@ function GiftsView({ setView, onAddToCart, likedItems, onToggleLike, onProductCl
             <p className="text-lg md:text-xl text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed">Discover a world where every gift tells a story. Handpicked, customized, and wrapped with love.</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4, duration: 0.6 }} className="flex flex-wrap items-center justify-center gap-4">
-            <div className="relative w-full max-md group">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-slate-900 transition-colors" size={20} />
+            <div className="relative w-full max-w-md group">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-delta-primary transition-colors" size={20} />
               <input 
                 type="text" 
                 placeholder="What are you looking for?" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-14 pr-8 py-5 bg-white border border-black/5 rounded-full text-sm shadow-2xl shadow-black/5 focus:ring-4 focus:ring-delta-primary/5 outline-none transition-all" 
+                className="w-full pl-14 pr-8 py-5 bg-white border border-slate-100 rounded-full text-sm shadow-2xl shadow-slate-200/50 focus:ring-4 focus:ring-delta-primary/5 outline-none transition-all" 
               />
             </div>
           </motion.div>
@@ -2837,7 +2837,7 @@ function GiftsView({ setView, onAddToCart, likedItems, onToggleLike, onProductCl
                   <h4 className="text-2xl font-serif italic leading-tight">Make it truly <span className="text-delta-primary">yours.</span></h4>
                   <p className="text-xs text-white/50 leading-relaxed font-medium">Every gift can be personalized with custom messages, wrapping, and boxing.</p>
                   <button 
-                    onClick={() => setView("coming-soon")}
+                    onClick={() => setView("blogs")}
                     className="w-full py-4 bg-delta-primary text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-all shadow-xl shadow-delta-primary/20"
                   >
                     See Blogs
