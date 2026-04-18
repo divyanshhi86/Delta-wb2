@@ -1924,8 +1924,6 @@ function ShopView({ onAddToCart, likedItems, onToggleLike, onProductClick }: any
 }
 
 function CoursesView() {
-  const [activeTab, setActiveTab] = useState("Software & Design");
-
   const categories = [
     { name: "Software & Design", icon: <PenTool size={18} /> },
     { name: "Accounting", icon: <Calculator size={18} /> },
@@ -1953,61 +1951,51 @@ function CoursesView() {
     { name: "Amit K.", text: "Computer basics course was very helpful for my office work.", rating: 4 }
   ];
 
-  const filteredCourses = courses.filter(c => c.category === activeTab);
-
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Integrated Header Section (No Banner) */}
-      <section className="max-w-7xl mx-auto pt-24 px-4 md:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          <div className="space-y-10 text-left">
-            <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-slate-900 rounded-full text-[10px] font-black uppercase tracking-widest text-white shadow-xl shadow-slate-900/10">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              Admissions Open 2024
+      <section className="bg-slate-900 py-12 px-4 md:px-8 text-center text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
+        </div>
+        <div className="relative z-10 space-y-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tighter uppercase">Professional Courses</h1>
+          <p className="text-slate-400 max-w-lg mx-auto text-sm md:text-base">Elevate your skills with our industry-leading certification programs and hands-on training.</p>
+        </div>
+      </section>
+
+      {/* Educational Stats Grid (No Headline) */}
+      <section className="max-w-7xl mx-auto pt-12 px-4 md:px-8 text-center space-y-16">
+        {/* Highlight Grid - Integrated Design */}
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="bg-white p-10 rounded-[3rem] border border-black/5 shadow-sm flex flex-col justify-center gap-6 text-left">
+            <div className="text-center space-y-2">
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Current Batch Timings</p>
+              <div className="h-px w-8 bg-delta-primary mx-auto" />
             </div>
             <div className="space-y-4">
-              <h1 className="text-6xl md:text-8xl font-bold tracking-tighter uppercase leading-none text-slate-900">
-                Master Your <br /><span className="text-delta-primary">Future Skills</span>
-              </h1>
-              <p className="text-slate-500 max-w-xl text-xl leading-relaxed font-medium">
-                Professional training in Software, Accounting, and Programming. Join 2,500+ students on their path to professional success.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-12">
-              <div className="space-y-1">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Students</p>
-                <p className="text-4xl font-black text-slate-900">2,500+</p>
+              <div className="flex justify-between items-center text-xs font-black">
+                <span className="text-slate-400 uppercase tracking-widest">Morning (B1)</span>
+                <span className="text-slate-900">11 AM — 02 PM</span>
               </div>
-              <div className="w-px h-12 bg-black/[0.05]" />
-              <div className="space-y-1">
-                <p className="text-[10px] font-black text-delta-primary uppercase tracking-widest italic">Success Rate</p>
-                <p className="text-4xl font-black italic text-delta-primary">98%</p>
+              <div className="h-px bg-black/[0.03]" />
+              <div className="flex justify-between items-center text-xs font-black">
+                <span className="text-slate-400 uppercase tracking-widest">Evening (B2)</span>
+                <span className="text-slate-900">04 PM — 07 PM</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-10 rounded-[3.5rem] border border-black/5 shadow-sm space-y-6">
-            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-2">Current Batch Timings</h3>
-            <div className="grid gap-4">
-              <div className="flex items-center gap-6 p-6 bg-slate-50 rounded-3xl border border-black/5 group hover:border-delta-primary transition-all text-left">
-                <div className="w-12 h-12 bg-white text-delta-primary rounded-xl flex items-center justify-center shadow-sm group-hover:bg-delta-primary group-hover:text-white transition-all">
-                  <Clock size={24} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Batch 01 (Morning)</p>
-                  <p className="text-xl font-bold text-slate-900 tracking-tight">11:00 AM — 02:00 PM</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-6 p-6 bg-slate-50 rounded-3xl border border-black/5 group hover:border-indigo-500 transition-all text-left">
-                <div className="w-12 h-12 bg-white text-indigo-500 rounded-xl flex items-center justify-center shadow-sm group-hover:bg-indigo-500 group-hover:text-white transition-all">
-                  <Clock size={24} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Batch 02 (Evening)</p>
-                  <p className="text-xl font-bold text-slate-900 tracking-tight">04:00 PM — 07:00 PM</p>
-                </div>
-              </div>
-            </div>
+          <div className="bg-slate-900 p-10 rounded-[3rem] text-white flex flex-col justify-center items-center space-y-2 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-delta-primary/20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700" />
+            <p className="text-[10px] font-black text-white/40 uppercase tracking-widest relative z-10">Total Students</p>
+            <p className="text-6xl font-black relative z-10">2,500+</p>
+            <p className="text-[10px] font-black text-delta-primary uppercase tracking-widest relative z-10">Alumni Network</p>
+          </div>
+
+          <div className="bg-white p-10 rounded-[3rem] border border-black/5 shadow-sm flex flex-col justify-center items-center space-y-2">
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Placement Success</p>
+            <p className="text-6xl font-black text-slate-900">98%</p>
+            <p className="text-[10px] font-black text-green-500 uppercase tracking-widest font-mono">Verified Records</p>
           </div>
         </div>
       </section>
@@ -2015,61 +2003,61 @@ function CoursesView() {
       <section className="max-w-7xl mx-auto py-24 px-4 md:px-8">
         <div className="flex flex-col lg:flex-row gap-16">
           {/* Main Content */}
-          <div className="flex-1 space-y-12">
-            <div className="flex flex-wrap gap-3">
-              {categories.map((cat) => (
-                <button 
-                  key={cat.name}
-                  onClick={() => setActiveTab(cat.name)}
-                  className={`px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${activeTab === cat.name ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20 scale-105' : 'bg-white text-slate-400 border border-black/5 hover:bg-slate-50'}`}
-                >
-                  {cat.icon} {cat.name}
-                </button>
-              ))}
-            </div>
+          <div className="flex-1 space-y-24">
+            {categories.map((category, catIdx) => (
+              <div key={catIdx} className="space-y-12">
+                <div className="flex items-center gap-6">
+                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 shadow-sm border border-black/5">
+                    {category.icon}
+                  </div>
+                  <h2 className="text-4xl font-bold text-slate-900 tracking-tight uppercase">{category.name}</h2>
+                  <div className="h-px flex-1 bg-black/[0.05]" />
+                </div>
 
-            <div className="grid sm:grid-cols-2 gap-8">
-              <AnimatePresence mode="wait">
-                {filteredCourses.map((s, i) => (
-                  <motion.div 
-                    key={s.title}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="bg-white p-8 rounded-[2.5rem] border border-black/5 shadow-sm group hover:shadow-2xl hover:shadow-black/5 transition-all flex flex-col justify-between"
-                  >
-                    <div className="space-y-6 text-left">
-                      <div className="flex items-center justify-between">
-                        <div className="w-14 h-14 bg-slate-50 text-slate-900 rounded-2xl flex items-center justify-center shadow-sm group-hover:bg-delta-primary group-hover:text-white transition-all duration-500">
-                          {React.cloneElement(s.icon as React.ReactElement, { size: 28 })}
+                <div className="grid sm:grid-cols-2 gap-8">
+                  {courses
+                    .filter(c => c.category === category.name)
+                    .map((s, i) => (
+                      <motion.div 
+                        key={s.title}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 }}
+                        className="bg-white p-8 rounded-[2.5rem] border border-black/5 shadow-sm group hover:shadow-2xl hover:shadow-black/5 transition-all flex flex-col justify-between"
+                      >
+                        <div className="space-y-6 text-left">
+                          <div className="flex items-center justify-between">
+                            <div className="w-14 h-14 bg-slate-50 text-slate-900 rounded-2xl flex items-center justify-center shadow-sm group-hover:bg-delta-primary group-hover:text-white transition-all duration-500">
+                              {React.cloneElement(s.icon as React.ReactElement, { size: 28 })}
+                            </div>
+                            <div className="text-right">
+                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Course Fee</p>
+                              <p className="text-2xl font-black text-slate-900">{s.price}</p>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <h3 className="text-2xl font-bold text-slate-900 leading-tight">{s.title}</h3>
+                            <p className="text-sm text-slate-500 leading-relaxed font-medium">{s.desc}</p>
+                          </div>
+                          <div className="flex items-center gap-4 py-3 px-4 bg-slate-50 rounded-2xl border border-black/5">
+                            <Calendar size={16} className="text-slate-400" />
+                            <span className="text-xs font-bold text-slate-600">Duration: {s.duration}</span>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Course Fee</p>
-                          <p className="text-2xl font-black text-slate-900">{s.price}</p>
+                        <div className="mt-8 pt-8 border-t border-black/5 space-y-4">
+                          <button className="w-full flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-delta-primary transition-colors">
+                            <FileText size={16} /> VIEW COURSE STRUCTURE
+                          </button>
+                          <button className="w-full py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-delta-primary transition-all shadow-lg shadow-slate-900/10">
+                            Enroll Now
+                          </button>
                         </div>
-                      </div>
-                      <div className="space-y-2">
-                        <h3 className="text-2xl font-bold text-slate-900 leading-tight">{s.title}</h3>
-                        <p className="text-sm text-slate-500 leading-relaxed font-medium">{s.desc}</p>
-                      </div>
-                      <div className="flex items-center gap-4 py-3 px-4 bg-slate-50 rounded-2xl border border-black/5">
-                        <Calendar size={16} className="text-slate-400" />
-                        <span className="text-xs font-bold text-slate-600">Duration: {s.duration}</span>
-                      </div>
-                    </div>
-                    <div className="mt-8 pt-8 border-t border-black/5 space-y-4">
-                      <button className="w-full flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-delta-primary transition-colors">
-                        <FileText size={16} /> VIEW COURSE STRUCTURE
-                      </button>
-                      <button className="w-full py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-delta-primary transition-all shadow-lg shadow-slate-900/10">
-                        Enroll Now
-                      </button>
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
+                      </motion.div>
+                    ))}
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Sidebar */}
@@ -2111,20 +2099,20 @@ function CoursesView() {
 
       {/* Career Guide Banner */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 mb-24">
-        <div className="bg-delta-primary rounded-[3rem] p-12 md:p-16 text-white relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-700" />
-          <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center text-left">
-            <div className="space-y-6">
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tighter uppercase leading-none">Not Sure Where <br />to Start?</h2>
-              <p className="text-white/80 text-lg max-w-md">Our career counselors are help you choose the right path based on your interests and goals.</p>
-              <button className="px-10 py-5 bg-white text-delta-primary font-black rounded-full hover:bg-slate-50 transition-all uppercase tracking-widest text-xs shadow-2xl">
-                Get Career Counseling
-              </button>
+        <div className="bg-delta-primary rounded-[2rem] p-8 md:p-10 text-white relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 group-hover:scale-110 transition-transform duration-700" />
+          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8 text-left">
+            <div className="space-y-3">
+              <h2 className="text-3xl font-bold tracking-tighter uppercase leading-tight">Not Sure Where to Start?</h2>
+              <p className="text-white/80 text-sm max-w-md">Our career counselors help you choose the right path based on your interests.</p>
             </div>
-            <div className="flex justify-end pr-12 hidden md:flex">
-              <div className="w-48 h-48 bg-white/10 backdrop-blur rounded-[2.5rem] flex items-center justify-center border border-white/20 rotate-12 group-hover:rotate-0 transition-transform duration-500">
-                <GraduationCap size={80} className="text-white" />
+            <div className="flex items-center gap-6">
+              <div className="hidden md:flex w-20 h-20 bg-white/10 backdrop-blur rounded-2xl items-center justify-center border border-white/20 rotate-6 group-hover:rotate-0 transition-transform duration-500">
+                <GraduationCap size={40} className="text-white" />
               </div>
+              <button className="px-8 py-4 bg-white text-delta-primary font-black rounded-xl hover:bg-slate-50 transition-all uppercase tracking-widest text-[10px] shadow-2xl whitespace-nowrap">
+                Get Free Counseling
+              </button>
             </div>
           </div>
         </div>
