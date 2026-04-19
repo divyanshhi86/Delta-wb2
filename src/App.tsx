@@ -4,10 +4,10 @@ import {
   ArrowLeft, ArrowRight, BookOpen, Briefcase, Camera, Check, ChevronDown, ChevronLeft, 
   ChevronRight, ChevronUp, Clock, Copy, Cpu, CreditCard, Facebook, FilePen, 
   FileText, Gift, GraduationCap, Headphones, Heart, Home, Image as ImageIcon, 
-  Instagram, Keyboard, LayoutGrid, Mail, MapPin, Megaphone, Menu, Filter,
+  Instagram, Keyboard, LayoutGrid, Mail, MapPin, Megaphone, Menu, Filter, LayoutDashboard,
   MessageCircle, Minus, Monitor, Mouse, Package, Pen, PenTool, List,
   Pencil, Play, Plus, Printer, Search, Settings, Shield, 
-  ShoppingBag, ShoppingCart, Smartphone, Sparkles, Square, Star, 
+  ShoppingBag, ShoppingCart, Smartphone, Sparkles, Square, Star, Layers,
   ThumbsUp, Trash2, Twitter, Upload, User, X, Youtube,
   CheckCircle2, Truck, RefreshCcw, MessageSquare, Box, Award, Calculator, Calendar, Layout, TableProperties
 } from 'lucide-react';
@@ -613,6 +613,8 @@ const ProductDetailView = ({ product, onAddToCart, onToggleLike, isLiked, setVie
 
 // --- Main App ---
 
+import AdminView from './components/AdminView';
+
 export default function App() {
   const [view, setView] = useState("home");
   const [lang, setLang] = useState("ENG");
@@ -683,45 +685,52 @@ export default function App() {
   const cartCount = cart.reduce((acc, item) => acc + item.qty, 0);
 
   return (
-    <div className="min-h-screen flex bg-warm-bg selection:bg-delta-primary/20 selection:text-delta-primary">
-      <Sidebar setView={setView} lang={lang} setLang={setLang} />
+    <div className={`min-h-screen flex selection:bg-delta-primary/20 selection:text-delta-primary ${view === 'admin' ? '' : 'bg-warm-bg'}`}>
+      {view !== 'admin' && <Sidebar setView={setView} lang={lang} setLang={setLang} />}
       
       <div className="flex-1 flex flex-col min-w-0">
-        <Header 
-          currentView={view} 
-          setView={setView} 
-          lang={lang} 
-          setLang={setLang} 
-          onCartClick={() => setView("cart")} 
-          cartCount={cartCount}
-          likedCount={liked.length}
-          user={user}
-          onProductClick={setSelectedProduct}
-          onMenuClick={() => setIsCategoriesOpen(true)}
-        />
+        {view !== 'admin' && (
+          <Header 
+            currentView={view} 
+            setView={setView} 
+            lang={lang} 
+            setLang={setLang} 
+            onCartClick={() => setView("cart")} 
+            cartCount={cartCount}
+            likedCount={liked.length}
+            user={user}
+            onProductClick={setSelectedProduct}
+            onMenuClick={() => setIsCategoriesOpen(true)}
+          />
+        )}
 
-        <MobileMenu 
-          isOpen={isCategoriesOpen} 
-          onClose={() => setIsCategoriesOpen(false)} 
-          setView={setView}
-          lang={lang}
-          setLang={setLang}
-        />
+        {view !== 'admin' && (
+          <MobileMenu 
+            isOpen={isCategoriesOpen} 
+            onClose={() => setIsCategoriesOpen(false)} 
+            setView={setView}
+            lang={lang}
+            setLang={setLang}
+          />
+        )}
 
-        <CartDrawer 
-          isOpen={isCartOpen} 
-          onClose={() => setIsCartOpen(false)} 
-          items={cart}
-          onRemove={removeFromCart}
-          onUpdateQty={updateQty}
-          onViewCart={() => { setView("cart"); setIsCartOpen(false); }}
-          likedItems={liked}
-          onToggleLike={toggleLike}
-        />
+        {view !== 'admin' && (
+          <CartDrawer 
+            isOpen={isCartOpen} 
+            onClose={() => setIsCartOpen(false)} 
+            items={cart}
+            onRemove={removeFromCart}
+            onUpdateQty={updateQty}
+            onViewCart={() => { setView("cart"); setIsCartOpen(false); }}
+            likedItems={liked}
+            onToggleLike={toggleLike}
+          />
+        )}
 
-        <main className="pt-16">
+        <main className={view === 'admin' ? '' : 'pt-16'}>
           {view === "home" && <HomeView setView={setView} onAddToCart={addToCart} likedItems={liked} onToggleLike={toggleLike} isCategoriesOpen={isCategoriesOpen} setIsCategoriesOpen={setIsCategoriesOpen} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
           {view === "shop" && <ShopView onAddToCart={addToCart} likedItems={liked} onToggleLike={toggleLike} onProductClick={(p: any) => { setSelectedProduct(p); setView("product-detail"); window.scrollTo(0, 0); }} />}
+          {view === "admin" && <AdminView setView={setView} />}
           {view === "courses" && <CoursesView />}
           {view === "services" && <ServicesView setView={setView} />}
           {view === "contact" && <ContactView />}
@@ -799,8 +808,21 @@ function Sidebar({ setView, lang, setLang }: any) {
         { name: "Our Blogs", view: "blogs", icon: <FileText size={18} /> }
       ]
     },
-    { name: "Coming Soon", icon: <ShoppingBag size={22} />, view: "coming-soon" },
-    { name: "Services", icon: <Settings size={22} />, view: "services" }
+    { 
+      name: "Coming Soon", 
+      icon: <ShoppingBag size={22} />,
+      view: "coming-soon"
+    },
+    { 
+      name: "Services", 
+      icon: <Settings size={22} />,
+      view: "services"
+    },
+    { 
+      name: "Admin Panel", 
+      icon: <LayoutDashboard size={22} />,
+      view: "admin"
+    }
   ];
 
   return (
@@ -823,8 +845,8 @@ function Sidebar({ setView, lang, setLang }: any) {
               <div key={idx} className="space-y-1">
                 <button 
                   onClick={() => {
-                    if (cat.view) {
-                      setView(cat.view);
+                    if ((cat as any).view) {
+                      setView((cat as any).view);
                       setActiveCategory(cat.name);
                     } else {
                       setActiveCategory(activeCategory === cat.name ? "" : cat.name);
@@ -838,7 +860,9 @@ function Sidebar({ setView, lang, setLang }: any) {
                     </div>
                     <span className="text-base font-bold">{cat.name}</span>
                   </div>
-                  {cat.sub && <ChevronDown size={18} className={activeCategory === cat.name ? '' : '-rotate-90'} />}
+                  {(cat as any).sub && (cat as any).sub.length > 0 && (
+                    <ChevronDown size={18} className={activeCategory === cat.name ? '' : '-rotate-90'} />
+                  )}
                 </button>
                 
                 {activeCategory === cat.name && cat.sub && (
@@ -1122,35 +1146,16 @@ function Header({ currentView, setView, lang, setLang, onCartClick, cartCount, l
 }
 
 function HomeView({ setView, onAddToCart, likedItems, onToggleLike, isCategoriesOpen, setIsCategoriesOpen, onProductClick }: any) {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const slides = [
-    {
-      title: <>Learning <br />& Store</>,
-      subtitle: "Expert computer services, quality stationery, and professional institute courses all under one roof.",
-      image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop",
-      primaryButton: "Explore Courses",
-      secondaryButton: "Shop Now",
-      primaryAction: () => setView("courses"),
-      secondaryAction: () => setView("shop")
-    },
-    {
-      title: <>Tech <br />& Support</>,
-      subtitle: "Expert computer repair, hardware upgrades, and software solutions to keep your business running smoothly.",
-      image: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?q=80&w=2070&auto=format&fit=crop",
-      primaryButton: "Our Services",
-      secondaryButton: "Book Repair",
-      primaryAction: () => setView("services"),
-      secondaryAction: () => setView("services")
-    }
+  const [isHovered, setIsHovered] = useState(false);
+  const services = [
+    { icon: <Copy size={24} />, title: "PHOTOCOPY", desc: "B&W and Color duplication", view: "printing" },
+    { icon: <Printer size={24} />, title: "PRINTING", desc: "High-speed industrial quality", view: "printing" },
+    { icon: <Layers size={24} />, title: "LAMINATION", desc: "Durable protective coating", view: "printing" },
+    { icon: <FilePen size={24} />, title: "FORM FILLING", desc: "Assisted government portals", view: "services" },
+    { icon: <Monitor size={24} />, title: "COMPUTER SERVICES", desc: "Software & hardware repair", view: "services" },
+    { icon: <Pen size={24} />, title: "STATIONERY", desc: "Premium office supplies", view: "shop" },
+    { icon: <Gift size={24} />, title: "GIFTS", desc: "Custom corporate branding", view: "shop" }
   ];
-
-  const nextSlide = () => setCurrentSlide(prev => (prev + 1) % slides.length);
-  const prevSlide = () => setCurrentSlide(prev => (prev - 1 + slides.length) % slides.length);
-
-  useEffect(() => {
-    const timer = setInterval(nextSlide, 8000);
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <>
@@ -1173,59 +1178,41 @@ function HomeView({ setView, onAddToCart, likedItems, onToggleLike, isCategories
         </button>
 
         <div className="relative min-h-[70vh] flex items-center px-8 md:px-16 overflow-hidden rounded-[3rem] border border-black/5 shadow-sm">
-          <AnimatePresence mode="wait">
-            <motion.div 
-              key={currentSlide}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              className="absolute inset-0 z-0"
-            >
-              <img src={slides[currentSlide].image} alt="Banner Background" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-              <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
-            </motion.div>
-          </AnimatePresence>
-
-          <AnimatePresence mode="wait">
-            <motion.div 
-              key={currentSlide}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.5 }}
-              className="container mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10"
-            >
-              <div className="space-y-8">
-                <div className="space-y-4">
-                  <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tighter leading-[0.85]">
-                    {slides[currentSlide].title}
-                  </h1>
-                  <p className="text-lg text-slate-600 max-w-lg leading-relaxed font-bold">
-                    {slides[currentSlide].subtitle}
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-4 pt-4">
-                  <button onClick={slides[currentSlide].primaryAction} className="px-10 py-4 bg-white text-slate-900 border border-slate-200 rounded-full font-black uppercase tracking-widest text-[10px] hover:bg-slate-900 hover:text-white transition-all shadow-sm">
-                    {slides[currentSlide].primaryButton}
-                  </button>
-                  <button onClick={slides[currentSlide].secondaryAction} className="px-10 py-4 bg-slate-900 text-white rounded-full font-black uppercase tracking-widest text-[10px] hover:bg-slate-800 transition-all shadow-xl shadow-black/20">
-                    {slides[currentSlide].secondaryButton}
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        <div className="flex items-center justify-center gap-4 mt-8">
-          <button onClick={prevSlide} className="text-slate-300 hover:text-slate-900 transition-colors"><ChevronLeft size={12} strokeWidth={4} /></button>
-          <div className="flex items-center gap-1.5">
-            {slides.map((_, idx) => (
-              <div key={idx} onClick={() => setCurrentSlide(idx)} className={`h-1 rounded-full transition-all cursor-pointer ${currentSlide === idx ? 'w-4 bg-slate-900' : 'w-1 bg-slate-200'}`} />
-            ))}
+          <div className="absolute inset-0 z-0" style={{ opacity: 1 }}>
+            <img 
+              alt="Banner Background" 
+              className="w-full h-full object-cover" 
+              referrerPolicy="no-referrer" 
+              src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
           </div>
-          <button onClick={nextSlide} className="text-slate-300 hover:text-slate-900 transition-colors"><ChevronRight size={12} strokeWidth={4} /></button>
+          <div className="container mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10" style={{ opacity: 1, transform: 'none' }}>
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-6xl md:text-8xl font-bold text-delta-primary tracking-tighter leading-[0.9]">
+                  Learning <br />& Store
+                </h1>
+                <p className="text-lg text-delta-secondary max-w-lg leading-relaxed font-medium">
+                  Expert computer services, quality stationery, and professional institute courses all under one roof.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-4 pt-4">
+                <button 
+                  onClick={() => setView('courses')}
+                  className="px-10 py-4 bg-white text-delta-primary border-2 border-delta-primary rounded-full font-black uppercase tracking-widest text-[10px] hover:bg-delta-primary hover:text-white transition-all outline-none"
+                >
+                  Explore Courses
+                </button>
+                <button 
+                  onClick={() => setView('shop')}
+                  className="px-10 py-4 bg-delta-primary text-white rounded-full font-black uppercase tracking-widest text-[10px] hover:bg-delta-primary/90 transition-all shadow-xl shadow-delta-primary/20 outline-none"
+                >
+                  Shop Now
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1273,25 +1260,44 @@ function HomeView({ setView, onAddToCart, likedItems, onToggleLike, isCategories
             VIEW ALL <ChevronRight size={14} />
           </button>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          {[
-            { icon: <Copy size={24} />, title: "PHOTOCOPY", desc: "B&W and Color duplication", view: "printing" },
-            { icon: <Printer size={24} />, title: "PRINTING", desc: "High-speed industrial quality", view: "printing" },
-            { icon: <FilePen size={24} />, title: "FORM FILLING", desc: "Assisted government portals", view: "services" },
-            { icon: <Monitor size={24} />, title: "COMPUTER SERVICES", desc: "Software & hardware repair", view: "services" },
-            { icon: <Pen size={24} />, title: "STATIONERY", desc: "Premium office supplies", view: "shop" },
-            { icon: <Gift size={24} />, title: "GIFTS", desc: "Custom corporate branding", view: "shop" }
-          ].map((item, idx) => (
-            <div key={idx} onClick={() => setView(item.view)} className="bg-white p-8 rounded-3xl border border-black/5 shadow-sm space-y-6 group cursor-pointer hover:shadow-md transition-all flex flex-col items-center text-center">
-              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-900 group-hover:bg-delta-primary group-hover:text-white transition-all">
-                {item.icon}
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-900">{item.title}</h3>
-                <p className="text-[11px] text-slate-400 font-bold leading-relaxed">{item.desc}</p>
-              </div>
-            </div>
-          ))}
+        <div className="overflow-hidden relative">
+          <motion.div 
+            className="flex gap-6 whitespace-nowrap py-4"
+            animate={{ 
+              x: isHovered ? undefined : [0, -1035] 
+            }}
+            transition={{ 
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 30,
+                ease: "linear",
+              }
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {[...services, ...services].map((item, idx) => (
+              <motion.div 
+                key={idx} 
+                onClick={() => setView(item.view)} 
+                whileHover={{ scale: 1.1, zIndex: 20 }}
+                className="flex-shrink-0 w-[240px] bg-white p-8 rounded-3xl border border-black/5 shadow-sm space-y-6 group cursor-pointer hover:shadow-xl transition-all flex flex-col items-center text-center"
+              >
+                <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-900 group-hover:bg-delta-primary group-hover:text-white transition-all">
+                  {item.icon}
+                </div>
+                <div className="space-y-2 whitespace-normal">
+                  <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-900">{item.title}</h3>
+                  <p className="text-[11px] text-slate-400 font-bold leading-relaxed">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+          
+          {/* Fading Edges */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-warm-bg to-transparent pointer-events-none z-10" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-warm-bg to-transparent pointer-events-none z-10" />
         </div>
       </section>
 
@@ -2185,17 +2191,68 @@ function ServicesView({ setView }: { setView: (v: string) => void }) {
 
   return (
     <div className="bg-slate-50 min-h-screen pb-24">
-      <section className="bg-slate-900 py-20 px-4 md:px-8 text-center text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" />
-        </div>
-        <div className="relative z-10 space-y-6">
-          <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tighter uppercase">Our Services</h1>
-          <p className="text-slate-400 max-w-xl mx-auto text-lg">From high-quality printing to expert tech support, we've got you covered with premium solutions.</p>
-        </div>
-      </section>
+      {/* New Hero Banner Style */}
+      <section className="max-w-7xl mx-auto px-4 md:px-8 pt-8">
+        <div className="relative bg-[#2D2B4A] rounded-[2.5rem] overflow-hidden shadow-2xl shadow-indigo-900/20">
+          {/* Background Decorative Elements */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-indigo-500/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2" />
+          
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between px-10 py-10 md:py-12 gap-10">
+            <div className="flex-1 space-y-6 text-center md:text-left">
+              <div className="space-y-4">
+                <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase leading-tight">Learning is Fun!</h1>
+                <p className="text-white/70 text-sm md:text-base font-medium max-w-md leading-relaxed">
+                  Learn fun anywhere and anytime without any time limit just through the application.
+                </p>
+              </div>
+              <button className="px-8 py-3 bg-white text-[#2D2B4A] font-black rounded-xl hover:bg-slate-50 transition-all uppercase tracking-widest text-[10px] hover:scale-105 active:scale-95 shadow-xl">
+                Get Started
+              </button>
+            </div>
 
-      <section className="max-w-7xl mx-auto py-16 px-4 md:px-8">
+            <div className="flex-1 relative flex justify-center items-center md:justify-end min-h-[250px] md:min-h-0">
+            {/* Illustration Mockup with Icons */}
+            <div className="relative">
+              <motion.div 
+                animate={{ y: [0, -15, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="relative z-20 flex items-center justify-center"
+              >
+                <div className="w-64 h-64 bg-white/10 backdrop-blur-md rounded-full border border-white/20 p-8 flex items-center justify-center group-hover:scale-110 transition-transform duration-700">
+                  <User size={140} className="text-white/90 drop-shadow-2xl" />
+                </div>
+              </motion.div>
+              
+              {/* Floating Icons */}
+              <motion.div 
+                animate={{ rotate: [0, 10, -10, 0], y: [0, 10, 0] }}
+                transition={{ duration: 5, repeat: Infinity }}
+                className="absolute -top-4 -right-4 w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-[#2D2B4A] shadow-2xl rotate-12"
+              >
+                <BookOpen size={28} />
+              </motion.div>
+              <motion.div 
+                animate={{ rotate: [0, -10, 10, 0], y: [0, -10, 0] }}
+                transition={{ duration: 6, repeat: Infinity }}
+                className="absolute bottom-4 -left-8 w-20 h-20 bg-indigo-400 rounded-3xl flex items-center justify-center text-white shadow-2xl -rotate-12"
+              >
+                <Sparkles size={32} />
+              </motion.div>
+              <motion.div 
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="absolute top-1/2 -right-12 w-12 h-12 bg-delta-primary rounded-full flex items-center justify-center text-white shadow-xl"
+              >
+                <Plus size={20} />
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      <section className="max-w-7xl mx-auto py-24 px-4 md:px-8">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {coreServices.map((item, idx) => (
             <div 
@@ -2203,7 +2260,7 @@ function ServicesView({ setView }: { setView: (v: string) => void }) {
               onClick={() => setView(item.view)} 
               className="bg-white p-8 rounded-3xl border border-black/5 shadow-sm space-y-6 group cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col items-center text-center"
             >
-              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-900 group-hover:bg-delta-primary group-hover:text-white transition-all">
+              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-900 group-hover:bg-delta-primary/10 group-hover:text-delta-primary transition-all">
                 {item.icon}
               </div>
               <div className="space-y-2">
